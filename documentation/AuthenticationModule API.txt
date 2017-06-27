@@ -5,58 +5,32 @@ AuthenticationModule API:
 -- request method: POST
 -- request params: 
 {
-	"email": "ciccio@email.com",
-	"password": "cicciopasticcio"
+	"username": "ciccio@email.com",
+	"password": "cicciopasticcio",
+	"nickname": "ciccio"
 }
 -- response:
 --- SUCCESS:
--- HTTP STATUS CODE: 201, NO CONTENT
+-- HTTP STATUS CODE: 200, OK
 -- HTTP BODY: empty
 
---- ERRORS:
--- HTTP STATUS CODE: 400, BAD REQUEST //wrong credentials format
--- HTTP BODY: empty
-
--- HTTP STATUS CODE: 403, FORBIDDEN //email already used
--- HTTP BODY: empty
-
--- HTTP STATUS CODE: 500, INTERNAL SERVER ERROR //errors during email sending
--- HTTP BODY: empty
-
-2) REGISTRATION CONFIRMATION
--- request URL: /registrationConfirm
--- request method: GET
--- request params:  
-	
-	"confirmationToken": "sldkfnglskjdfnglskjdfngljksdfnlksjdnfgljksd"; //FORM PARAMETERS IN HTML MAIL!!!
-
--- response:
---- SUCCESS AND ERRORS:
--- HTTP STATUS CODE: 301, REDIRECT TO ANGULARJS APP?!
--- HTTP BODY: empty
-
-3) LOGIN
+2) LOGIN
 -- request URL: /login
 -- request method: POST
 -- request params: 
 {
-	"email": "ciccio@email.com",
+	"username": "ciccio@email.com",
 	"password": "cicciopasticcio"
 }
 -- response:
 --- SUCCESS:
 -- HTTP STATUS CODE: 200, OK
--- HTTP BODY:
-{	
-	"token": "sldfngdfng.fgòskdnfòdifgòdfi.òaoidfgòdoifg"
-}
-
---- ERRORS:
--- HTTP STATUS CODE: 401, UNAUTHORIZED //wrong credentials
+-- HTTP Headers:
+- "Authorization" = Bearer sldfngdfng.fgòskdnfòdifgòdfi.òaoidfgòdoifg
 -- HTTP BODY: empty
 
-4) LOGOUT
--- request URL: /logout
+3) TOKEN VERIFICATION
+-- request URL: /authenticate
 -- request method: POST
 -- request params: 
 {	
@@ -65,33 +39,8 @@ AuthenticationModule API:
 
 -- response:
 --- SUCCESS:
--- HTTP STATUS CODE: 204, NO CONTENT
--- HTTP BODY:
-
---- ERRORS:
--- HTTP STATUS CODE: 403, FORBIDDEN //user not logged in
--- HTTP BODY: empty
-
-5) TOKEN VERIFICATION
--- request URL: /tokenVerify
--- request method: GET
--- request params: 
-{	
-	"token": "sldfngdfng.fgòskdnfòdifgòdfi.òaoidfgòdoifg"
-}
-
--- response:
---- SUCCESS:
 -- HTTP STATUS CODE: 200, OK
 -- HTTP BODY:
 {	
-	"email": "ciccio@email.com"
+	"username": "ciccio@email.com"
 }
-
---- ERRORS:
--- HTTP STATUS CODE: 401, UNAUTHORIZED //wrong token
--- HTTP BODY: empty
-
--- HTTP STATUS CODE: 403, FORBIDDEN //user not logged in
--- HTTP BODY: empty
-
