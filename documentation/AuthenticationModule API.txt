@@ -25,7 +25,7 @@ AuthenticationModule API:
 
 2) REGISTRATION CONFIRMATION
 -- request URL: /registrationConfirm
--- request method: POST
+-- request method: GET
 -- request params:  
 	
 	"confirmationToken": "sldkfnglskjdfnglskjdfngljksdfnlksjdnfgljksd"; //FORM PARAMETERS IN HTML MAIL!!!
