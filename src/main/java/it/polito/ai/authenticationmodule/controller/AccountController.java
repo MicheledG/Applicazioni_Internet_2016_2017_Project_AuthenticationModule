@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.authenticationmodule.exception.FailedToLoginException;
 import it.polito.ai.authenticationmodule.exception.FailedToSignupException;
+import it.polito.ai.authenticationmodule.exception.JWTAuthenticationException;
+import it.polito.ai.authenticationmodule.security.JWTService;
 import it.polito.ai.authenticationmodule.security.LoginCredentials;
 import it.polito.ai.authenticationmodule.security.SignupCredentials;
 import it.polito.ai.authenticationmodule.service.AccountService;
@@ -33,6 +37,9 @@ public class AccountController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private JWTService jwtService;
 	
 	/**
 	 * Authenticate a user by checking his/her credentials (username and password)
@@ -86,26 +93,23 @@ public class AccountController {
 	 * @throws FailedToAuthenticate
 	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, String>> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticate {
+	public ResponseEntity<Authentication> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticate {
 		
 		String token = requestBody.get("token");
+		
 		if (token == null) {
 			throw new FailedToAuthenticate();
 		}
 		
-		String username = accountService.getUsernameFromToken(token);
-		
-		System.err.print("Username is: ");
-		System.err.println(username);
-		
-		if (username == null) {
+		Authentication userAuthentication;
+		try {
+			userAuthentication = jwtService.getAuthentication(token);
+		} catch(Exception e) {
 			throw new FailedToAuthenticate();
 		}
 		
-		Map<String, String> response = new HashMap<>();
-		response.put("username", username);
+		return new ResponseEntity<Authentication>(userAuthentication, HttpStatus.OK);
 		
-		return new ResponseEntity<Map<String,String>>(response, HttpStatus.OK);
 	}
 	
 
