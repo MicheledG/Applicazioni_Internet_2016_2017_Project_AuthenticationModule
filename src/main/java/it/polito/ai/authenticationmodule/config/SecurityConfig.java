@@ -49,11 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			// Security policy
 			.authorizeRequests()
-				// Allow anonymous access to "/" path and static resources
-				.antMatchers("/").permitAll()
-				.antMatchers("/app/**/*").permitAll()
-				.antMatchers("/bower_components/**/*").permitAll()
-				.antMatchers("/index.html").permitAll()
 				// Allow anonymous access to "/login" and "/signup" (only POST requests)
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				.antMatchers(HttpMethod.POST, "/signup").permitAll()
