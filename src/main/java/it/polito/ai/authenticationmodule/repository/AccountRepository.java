@@ -1,9 +1,9 @@
-package it.polito.ai.authenticationmodule.account.repository;
+package it.polito.ai.authenticationmodule.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import it.polito.ai.authenticationmodule.account.model.Account;
+import it.polito.ai.authenticationmodule.model.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {

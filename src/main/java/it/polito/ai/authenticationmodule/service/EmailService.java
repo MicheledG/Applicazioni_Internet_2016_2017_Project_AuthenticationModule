@@ -1,4 +1,4 @@
-package it.polito.ai.authenticationmodule.account.service;
+package it.polito.ai.authenticationmodule.service;
 
 import org.springframework.mail.SimpleMailMessage;
 

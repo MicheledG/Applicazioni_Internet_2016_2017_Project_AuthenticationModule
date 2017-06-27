@@ -1,4 +1,4 @@
-package it.polito.ai.authenticationmodule.account.model;
+package it.polito.ai.authenticationmodule.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

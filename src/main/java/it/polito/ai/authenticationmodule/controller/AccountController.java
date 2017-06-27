@@ -1,4 +1,4 @@
-package it.polito.ai.authenticationmodule.account.controller;
+package it.polito.ai.authenticationmodule.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.polito.ai.authenticationmodule.account.service.AccountService;
 import it.polito.ai.authenticationmodule.exception.FailedToLoginException;
 import it.polito.ai.authenticationmodule.exception.FailedToSignupException;
 import it.polito.ai.authenticationmodule.security.LoginCredentials;
 import it.polito.ai.authenticationmodule.security.SignupCredentials;
+import it.polito.ai.authenticationmodule.service.AccountService;
 import it.polito.ai.authenticationmodule.exception.FailedToAuthenticate;
 
 /**

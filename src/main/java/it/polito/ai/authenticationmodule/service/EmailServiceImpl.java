@@ -1,4 +1,4 @@
-package it.polito.ai.authenticationmodule.account.service;
+package it.polito.ai.authenticationmodule.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;

@@ -1,12 +1,12 @@
-package it.polito.ai.authenticationmodule.account.service;
+package it.polito.ai.authenticationmodule.service;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.polito.ai.authenticationmodule.account.model.Account;
-import it.polito.ai.authenticationmodule.account.repository.AccountRepository;
+import it.polito.ai.authenticationmodule.model.Account;
+import it.polito.ai.authenticationmodule.repository.AccountRepository;
 import it.polito.ai.authenticationmodule.security.JWTService;
 import it.polito.ai.authenticationmodule.security.LoginCredentials;
 import it.polito.ai.authenticationmodule.security.SignupCredentials;
