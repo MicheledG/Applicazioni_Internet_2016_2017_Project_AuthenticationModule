@@ -1,6 +1,5 @@
 package it.polito.ai.authenticationmodule.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +17,7 @@ import it.polito.ai.authenticationmodule.exception.FailedToAuthenticate;
 import it.polito.ai.authenticationmodule.exception.FailedToLoginException;
 import it.polito.ai.authenticationmodule.exception.FailedToSignupException;
 import it.polito.ai.authenticationmodule.security.LoginCredentials;
+import it.polito.ai.authenticationmodule.security.RemoteAuthentication;
 import it.polito.ai.authenticationmodule.security.SignupCredentials;
 import it.polito.ai.authenticationmodule.service.AccountService;
 
@@ -79,14 +79,14 @@ public class AccountController {
 	}
 	
 	/**
-	 * Given a token, verify it and return the relative username.
+	 * Given a token, verify it and return the remote authentication
 	 * 
 	 * @param token
 	 * @return
 	 * @throws FailedToAuthenticate
 	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, String>> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticate {
+	public ResponseEntity<RemoteAuthentication> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticate {
 		
 		String token = requestBody.get("token");
 		
@@ -102,10 +102,10 @@ public class AccountController {
 			throw new FailedToAuthenticate();
 		}
 		
-		Map<String, String> response = new HashMap<>();
-		response.put("username", username);
+		RemoteAuthentication remoteAuthentication = new RemoteAuthentication();
+		remoteAuthentication.setUsername(username);
 		
-		return new ResponseEntity<Map<String,String>>(response, HttpStatus.OK);
+		return new ResponseEntity<RemoteAuthentication>(remoteAuthentication, HttpStatus.OK);
 		
 	}
 }
