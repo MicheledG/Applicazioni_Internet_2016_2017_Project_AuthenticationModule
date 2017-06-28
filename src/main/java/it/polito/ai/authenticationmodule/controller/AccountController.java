@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.polito.ai.authenticationmodule.exception.FailedToAuthenticate;
+import it.polito.ai.authenticationmodule.exception.FailedToAuthenticateException;
 import it.polito.ai.authenticationmodule.exception.FailedToLoginException;
 import it.polito.ai.authenticationmodule.exception.FailedToSignupException;
 import it.polito.ai.authenticationmodule.security.LoginCredentials;
@@ -85,15 +85,15 @@ public class AccountController {
 	 * 
 	 * @param token
 	 * @return
-	 * @throws FailedToAuthenticate
+	 * @throws FailedToAuthenticateException
 	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<RemoteAuthentication> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticate {
+	public ResponseEntity<RemoteAuthentication> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticateException {
 		
 		String token = requestBody.get("token");
 		
 		if (token == null) {
-			throw new FailedToAuthenticate();
+			throw new FailedToAuthenticateException();
 		}
 		String username = accountService.getUsernameFromToken(token);
 		
@@ -101,7 +101,7 @@ public class AccountController {
 		System.err.println(username);
 		
 		if (username == null) {
-			throw new FailedToAuthenticate();
+			throw new FailedToAuthenticateException();
 		}
 		
 		RemoteAuthentication remoteAuthentication = new RemoteAuthentication();

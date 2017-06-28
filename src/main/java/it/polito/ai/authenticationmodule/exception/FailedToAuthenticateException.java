@@ -2,11 +2,11 @@ package it.polito.ai.authenticationmodule.exception;
 
 import static java.lang.String.format;
 
-public class FailedToAuthenticate extends Exception {
+public class FailedToAuthenticateException extends Exception {
 
 	private static final long serialVersionUID = -4054597124848897187L;
 
-	public FailedToAuthenticate() {
+	public FailedToAuthenticateException() {
         super(format("Failed to authenticate"));
     }
 	
