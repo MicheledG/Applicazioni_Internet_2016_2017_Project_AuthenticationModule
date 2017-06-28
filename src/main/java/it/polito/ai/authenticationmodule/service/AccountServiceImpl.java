@@ -70,6 +70,7 @@ public class AccountServiceImpl implements AccountService {
 		Account newAccount = new Account(credentials.getUsername(), credentials.getPassword());
 		accountRepository.saveAndFlush(newAccount);
 		
+		// TODO MAJOR: this profile initialization is to move where the verification through email is done
 		// TODO IN AN OTHER WAY E.G. USING PROFILEMODULE API
 		//Profile newProfile = new Profile(credentials.getUsername(), credentials.getNickname());
 		//profileService.addProfile(newProfile);
