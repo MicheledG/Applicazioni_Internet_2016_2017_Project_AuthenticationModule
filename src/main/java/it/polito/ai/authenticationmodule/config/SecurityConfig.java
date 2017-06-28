@@ -49,9 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			// Security policy
 			.authorizeRequests()
+				// Allow CORS PREFLIGHTED REQUESTS
+				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				// Allow anonymous access to "/login" and "/signup" (only POST requests)
-				.antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.POST, "/signup").permitAll()
+				.antMatchers(HttpMethod.POST,"/login").permitAll()
+				.antMatchers(HttpMethod.POST,"/signup").permitAll()
 				//TODO: may be it is better to add authentication of a microservice to use this endpoint
 				.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 				// Allow anonymous access to "/verify" (only GET requests)
