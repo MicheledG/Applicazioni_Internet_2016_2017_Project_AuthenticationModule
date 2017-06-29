@@ -30,7 +30,7 @@ import it.polito.ai.auth.service.AccountService;
  * - token verification (authenticate).
  */
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="*", exposedHeaders="Authorization")
 public class AccountController {
 	
 	@Autowired
