@@ -62,6 +62,12 @@ public class JWTHandler {
 		
 	}
 
+	/**
+	 * Parse and verify a token to extract the relative username.
+	 * 
+	 * @param token
+	 * @return
+	 */
 	public static String getUsernameFromToken(String token) {
 		return parse(token);
 	}

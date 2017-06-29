@@ -1,9 +1,13 @@
 package it.polito.ai.auth.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import it.polito.ai.auth.model.Account;
 import it.polito.ai.auth.repository.AccountRepository;
@@ -13,6 +17,8 @@ import it.polito.ai.auth.security.SignupCredentials;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+	
+	private static final String REMOTE_PROFILE_ENDPOINT = "http://localhost:8083/profile";
 	
 	@Autowired
 	private JWTService jwtService;
@@ -71,9 +77,10 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.saveAndFlush(newAccount);
 		
 		// TODO MAJOR: this profile initialization is to move where the verification through email is done
-		// TODO IN AN OTHER WAY E.G. USING PROFILEMODULE API
-		//Profile newProfile = new Profile(credentials.getUsername(), credentials.getNickname());
-		//profileService.addProfile(newProfile);
+		if (!createProfile(credentials.getUsername(), credentials.getNickname())) {
+			accountRepository.delete(newAccount); // Temporary, to be removed after mail implementation
+			return false;
+		}
 		
 		// Here you should generate a unique and temporary token and call an external service for sending 
 		// an email to the user in order to activate his/her account. The email will contain a url to click,
@@ -83,18 +90,39 @@ public class AccountServiceImpl implements AccountService {
 		return true;
 	}
 	
-	
-//	@Override
-//	public String getNickname(String username) {
-//		//TODO IN AN OTHER WAY E.G. USING PROFILEMODULE API OR DELETING THE NEEDS TO HAVE NICKNAME RIGHT HERE
-//		//return profileService.getNickname(username);
-//		/*
-//		 * DEBUG
-//		 */
-//		return "ciccio"; 
-//		
-//		//return null;
-//	}
+	/**
+	 * Send a POST request to the Profile Module in order to create
+	 * a new profile given a username and a nickname.
+	 * 
+	 * @param username
+	 * @param nickname
+	 * @return	True if succeed, false if failed
+	 */
+	private boolean createProfile(String username, String nickname) {
+		
+		// Create the request body with username and nickname
+		Map<String, String> requestBody = new HashMap<>();
+		requestBody.put("username", username);
+		requestBody.put("nickname", nickname);
+		
+		// Send the profile creation request to the Profile module
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			// POST request
+			restTemplate.postForObject(
+					REMOTE_PROFILE_ENDPOINT,
+					requestBody,
+					String.class
+			);
+		} catch (Exception e) {
+			// Error getting data from the Profile module
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		return true;
+	}
 	
 	@Override
 	public String getUsernameFromToken(String token) {
