@@ -79,9 +79,10 @@ public class AccountController {
 	 * @param token
 	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.GET)
-	public void verify(@RequestParam String token) {
-		// Verify the token.
-		// If valid, enable the relative account.
+	public void verify(@RequestParam String token) throws FailedToSignupException {
+		if (!accountService.verify(token)) {
+			throw new FailedToSignupException();
+		}
 	}
 
 	/**

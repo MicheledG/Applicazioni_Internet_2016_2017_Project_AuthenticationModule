@@ -1,6 +1,7 @@
 package it.polito.ai.auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void sendEmail(String mail, String token) {
 		
+		System.err.println("Mail: " + mail);
 		String text = String.format(template.getText(), token);  
+		System.err.println("Text: " + text);
 		sendSimpleMessage(mail, "CinqueTi Account Activation", text);
-		
+		System.err.println("Mail sent");
 	}
 
     public void sendSimpleMessage(String to, String subject, String text) {
@@ -28,7 +31,13 @@ public class MailServiceImpl implements MailService {
         message.setTo(to); 
         message.setSubject(subject); 
         message.setText(text);
-        emailSender.send(message);
+        
+        try {
+			emailSender.send(message);
+		} catch (MailException e) {
+			System.err.println("Mail failed");
+			e.printStackTrace();
+		}
 
     }
 

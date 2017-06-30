@@ -88,6 +88,8 @@ public class AccountServiceImpl implements AccountService {
 		// Generate a token for account activation
 		String token = jwtService.getToken(credentials.getUsername());
 		
+		System.err.println("Token: " + token);
+		
 		// Send an email with the generated token
 		mailService.sendEmail(credentials.getUsername(), token);
 		
@@ -158,6 +160,24 @@ public class AccountServiceImpl implements AccountService {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public boolean verify(String token) {
+		// Verify token
+		String username = jwtService.getUsername(token);
+		
+		// Token not valid
+		if (username == null) {
+			return false;
+		}
+		
+		// If valid, enable account
+		Account account = accountRepository.findOneByUsername(username);
+		account.setEnabled(true);
+		accountRepository.save(account);
+		
+		return false;
 	}
 
 }

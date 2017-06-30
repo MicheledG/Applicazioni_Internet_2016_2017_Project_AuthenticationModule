@@ -38,7 +38,7 @@ public class Account {
 	public Account(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.enabled = true;
+		this.enabled = false;
 	}
 
 	public Long getId() {

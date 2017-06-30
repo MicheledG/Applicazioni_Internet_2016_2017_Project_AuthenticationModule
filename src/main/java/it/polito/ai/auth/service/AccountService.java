@@ -14,5 +14,7 @@ public interface AccountService {
 	public String getUsernameFromToken(String token);
 
 	public boolean updatePassword(String username, String password);
+
+	public boolean verify(String token);
 	
 }

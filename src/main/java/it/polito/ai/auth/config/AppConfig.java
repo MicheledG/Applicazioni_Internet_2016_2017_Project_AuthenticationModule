@@ -8,11 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @ComponentScan(basePackages = "it.polito.ai")
 @EnableWebMvc
+@EnableAsync
 public class AppConfig {
 	
 	@Bean
@@ -21,8 +23,8 @@ public class AppConfig {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 	    mailSender.setHost("smtp.gmail.com");
 	    mailSender.setPort(587);
-	    mailSender.setUsername("my.gmail@gmail.com");
-	    mailSender.setPassword("password");
+	    mailSender.setUsername("cinqueti.ai.polito@gmail.com");
+	    mailSender.setPassword("AI20162017CinqueTi");
 	     
 	    Properties props = mailSender.getJavaMailProperties();
 	    props.put("mail.transport.protocol", "smtp");
