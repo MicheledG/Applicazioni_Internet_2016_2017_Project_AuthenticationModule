@@ -10,9 +10,9 @@ public interface AccountService {
 	public boolean login(LoginCredentials credentials, HttpServletResponse response);
 
 	public boolean signup(SignupCredentials credentials);
-
-	//public String getNickname(String username);
 	
 	public String getUsernameFromToken(String token);
+
+	public boolean updatePassword(String username, String password);
 	
 }
