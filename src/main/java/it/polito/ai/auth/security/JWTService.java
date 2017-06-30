@@ -30,5 +30,13 @@ public interface JWTService {
 	 * @return
 	 */
 	String getUsername(String token);
+	
+	/**
+	 * Generate a token given a username.
+	 * 
+	 * @param username
+	 * @return
+	 */
+	String getToken(String username);
 
 }

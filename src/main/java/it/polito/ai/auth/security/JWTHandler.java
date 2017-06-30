@@ -72,4 +72,18 @@ public class JWTHandler {
 		return parse(token);
 	}
 
+	public static String build24(String username) {
+		Date now = new Date();
+		
+		String JWT = Jwts.builder()
+						 .setId(UUID.randomUUID().toString())
+				 		 .setSubject(username)
+				 		 .setIssuedAt(now)
+				 		 .setExpiration(new Date(System.currentTimeMillis() + 24*60*60*1000))
+				 		 .signWith(SignatureAlgorithm.HS512, SECRET)
+				 		 .compact();
+		
+		return JWT;
+	}
+
 }

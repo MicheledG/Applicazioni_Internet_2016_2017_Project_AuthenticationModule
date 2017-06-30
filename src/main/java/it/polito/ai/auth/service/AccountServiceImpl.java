@@ -24,6 +24,9 @@ public class AccountServiceImpl implements AccountService {
 	private JWTService jwtService;
 	
 	@Autowired
+	private MailService mailService;
+	
+	@Autowired
 	private AccountRepository accountRepository;
 
 	@Override
@@ -76,16 +79,17 @@ public class AccountServiceImpl implements AccountService {
 		Account newAccount = new Account(credentials.getUsername(), credentials.getPassword());
 		accountRepository.saveAndFlush(newAccount);
 		
-		// TODO MAJOR: this profile initialization is to move where the verification through email is done
+		// Create a profile for the new user
 		if (!createProfile(credentials.getUsername(), credentials.getNickname())) {
 			accountRepository.delete(newAccount); // Temporary, to be removed after mail implementation
 			return false;
 		}
 		
-		// Here you should generate a unique and temporary token and call an external service for sending 
-		// an email to the user in order to activate his/her account. The email will contain a url to click,
-		// having the token as query parameter. After having verified that token, the account status will
-		// be set to 'enabled'.
+		// Generate a token for account activation
+		String token = jwtService.getToken(credentials.getUsername());
+		
+		// Send an email with the generated token
+		mailService.sendEmail(credentials.getUsername(), token);
 		
 		return true;
 	}

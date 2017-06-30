@@ -44,4 +44,9 @@ public class JWTServiceImpl implements JWTService {
 		return username;
 	}
 
+	@Override
+	public String getToken(String username) {
+		return JWTHandler.build24(username);
+	}
+
 }
