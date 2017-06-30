@@ -12,5 +12,7 @@ public interface AccountService {
 	public boolean signup(SignupCredentials credentials);
 	
 	public String getUsernameFromToken(String token);
+
+	public boolean updatePassword(String username, String password);
 	
 }

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import it.polito.ai.auth.exception.FailedToAuthenticateException;
 import it.polito.ai.auth.exception.FailedToLoginException;
 import it.polito.ai.auth.exception.FailedToSignupException;
+import it.polito.ai.auth.exception.FailedToUpdatePasswordException;
 import it.polito.ai.auth.security.LoginCredentials;
+import it.polito.ai.auth.security.Password;
 import it.polito.ai.auth.security.RemoteAuthentication;
 import it.polito.ai.auth.security.SignupCredentials;
 import it.polito.ai.auth.service.AccountService;
@@ -74,7 +78,7 @@ public class AccountController {
 	 * 
 	 * @param token
 	 */
-	@RequestMapping(value = "verify", method = RequestMethod.GET)
+	@RequestMapping(value = "/verify", method = RequestMethod.GET)
 	public void verify(@RequestParam String token) {
 		// Verify the token.
 		// If valid, enable the relative account.
@@ -101,6 +105,20 @@ public class AccountController {
 		RemoteAuthentication remoteAuthentication = new RemoteAuthentication(username);
 		
 		return new ResponseEntity<RemoteAuthentication>(remoteAuthentication, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/password", method = RequestMethod.PUT)
+	public void updatePassword(@RequestBody Password password) throws FailedToUpdatePasswordException {
+		
+		// Get the username of the current logged user
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		
+		// Update the password of the current logged user
+		if (!accountService.updatePassword(username, password.getPassword())) {
+			throw new FailedToUpdatePasswordException();
+		}
 		
 	}
 }

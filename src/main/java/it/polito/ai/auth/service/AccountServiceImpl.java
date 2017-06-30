@@ -143,4 +143,17 @@ public class AccountServiceImpl implements AccountService {
 		return username;
 	}
 
+	@Override
+	public boolean updatePassword(String username, String password) {
+		Account account = accountRepository.findOneByUsername(username);
+		account.setPassword(password);
+		Account newAccount = accountRepository.save(account);
+		
+		if (newAccount == null) {
+			return false;
+		}
+		
+		return true;
+	}
+
 }

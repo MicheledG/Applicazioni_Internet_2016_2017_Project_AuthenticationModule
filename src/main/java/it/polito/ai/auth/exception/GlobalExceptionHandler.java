@@ -33,4 +33,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FailedToSignupException.class)
     public void failedToSignup() {
     }
+    
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(FailedToUpdatePasswordException.class)
+    public void failedToUpdatePassword() {
+    }
 }
