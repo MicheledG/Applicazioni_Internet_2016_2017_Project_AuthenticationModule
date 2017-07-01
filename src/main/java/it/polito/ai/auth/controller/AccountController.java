@@ -9,17 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.auth.exception.FailedToAuthenticateException;
 import it.polito.ai.auth.exception.FailedToLoginException;
 import it.polito.ai.auth.exception.FailedToSignupException;
-import it.polito.ai.auth.exception.FailedToUpdatePasswordException;
 import it.polito.ai.auth.security.LoginCredentials;
 import it.polito.ai.auth.security.Password;
 import it.polito.ai.auth.security.RemoteAuthentication;
@@ -49,8 +50,12 @@ public class AccountController {
 	 * @throws FailedToLoginException
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(@RequestBody LoginCredentials credentials, HttpServletResponse response) throws FailedToLoginException {
+	@ResponseStatus(code = HttpStatus.OK)
+	public void login(@Validated @RequestBody LoginCredentials credentials, HttpServletResponse response) throws FailedToLoginException {
 		
+		// If the login credentials fails validation => 400
+		
+		// If the login credentials are wrong => 401
 		if (!accountService.login(credentials, response)) {
 			throw new FailedToLoginException(credentials.getUsername());
 		}
@@ -65,8 +70,12 @@ public class AccountController {
 	 * @throws FailedToSignupException
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public void signup(@RequestBody SignupCredentials credentials, HttpServletResponse response) throws FailedToSignupException {
+	@ResponseStatus(code = HttpStatus.OK)
+	public void signup(@Validated @RequestBody SignupCredentials credentials, HttpServletResponse response) throws FailedToSignupException {
 		
+		// If the profile fails validation => 400
+		
+		// If an account with the same username already exists => 409
 		if (!accountService.signup(credentials)) {
 			throw new FailedToSignupException();
 		}
@@ -78,9 +87,12 @@ public class AccountController {
 	 * 
 	 * @param token
 	 */
-	@RequestMapping(value = "/verify", method = RequestMethod.GET)
-	public void verify(@RequestParam String token) throws FailedToSignupException {
-		if (!accountService.verify(token)) {
+	@RequestMapping(value = "/activate", method = RequestMethod.GET)
+	@ResponseStatus(code = HttpStatus.OK)
+	public void activate(@RequestParam String token) throws FailedToSignupException {
+		
+		// If account activation failes => 400
+		if (!accountService.activate(token)) {
 			throw new FailedToSignupException();
 		}
 	}
@@ -93,12 +105,14 @@ public class AccountController {
 	 * @throws FailedToAuthenticateException
 	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@ResponseStatus(code = HttpStatus.OK)
 	public ResponseEntity<RemoteAuthentication> authenticate(@RequestBody Map<String, String> requestBody) throws FailedToAuthenticateException {
 		
 		String token = requestBody.get("token");
 		
 		String username = accountService.getUsernameFromToken(token);
 		
+		// If authentication fails => 401
 		if (username == null) {
 			throw new FailedToAuthenticateException();
 		}
@@ -109,17 +123,24 @@ public class AccountController {
 		
 	}
 	
+	/**
+	 * Update the password of the currently logged user.
+	 * 
+	 * @param password
+	 * @throws FailedToUpdatePasswordException
+	 */
 	@RequestMapping(value = "/password", method = RequestMethod.PUT)
-	public void updatePassword(@RequestBody Password password) throws FailedToUpdatePasswordException {
+	@ResponseStatus(code = HttpStatus.OK)
+	public void updatePassword(@Validated @RequestBody Password password) {
+		
+		// If the password fails validation => 400
 		
 		// Get the username of the current logged user
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		
 		// Update the password of the current logged user
-		if (!accountService.updatePassword(username, password.getPassword())) {
-			throw new FailedToUpdatePasswordException();
-		}
+		accountService.updatePassword(username, password.getPassword());
 		
 	}
 }

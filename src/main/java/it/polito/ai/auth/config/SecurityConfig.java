@@ -49,21 +49,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			// Security policy
 			.authorizeRequests()
-				// Allow CORS PREFLIGHTED REQUESTS
+				// Allow CORS preflighted requests
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				// Allow anonymous access to "/login" and "/signup" (only POST requests)
 				.antMatchers(HttpMethod.POST,"/login").permitAll()
 				.antMatchers(HttpMethod.POST,"/signup").permitAll()
-				//TODO: may be it is better to add authentication of a microservice to use this endpoint
+				// Allow anonymous access to "/activate" (only GET requests)
+				.antMatchers(HttpMethod.GET, "/activate").permitAll()
+				// TODO add authentication between microservices
 				.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-				// Allow anonymous access to "/verify" (only GET requests)
-				.antMatchers(HttpMethod.GET, "/verify").permitAll()
 				// Any other request must be authenticated
 				.anyRequest().authenticated().and()
 			// Custom filter for authenticating users using tokens
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			// Disable resource caching, enable only if the client app is external to this modoule
-			// .headers().cacheControl();
+			.headers().cacheControl();
 	}	
 
 }

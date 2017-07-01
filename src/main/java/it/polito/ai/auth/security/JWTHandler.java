@@ -71,7 +71,14 @@ public class JWTHandler {
 	public static String getUsernameFromToken(String token) {
 		return parse(token);
 	}
-
+	
+	/** 
+	 * Generate a temporary token (24 hours) used just
+	 * for account activation.
+	 * 
+	 * @param username
+	 * @return
+	 */
 	public static String build24(String username) {
 		Date now = new Date();
 		

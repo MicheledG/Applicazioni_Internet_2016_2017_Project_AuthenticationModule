@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.security.SignatureException;
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,7 +36,8 @@ public class GlobalExceptionHandler {
     }
     
     @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler(FailedToUpdatePasswordException.class)
-    public void failedToUpdatePassword() {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public void failedToValidate() {
     }
+    
 }

@@ -39,7 +39,7 @@ public class AppConfig {
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText("Click on the following link in order to activate your account:\n"
-        		+ "http://localhost:8081/verify" + "?token=%s\n");
+        		+ "http://localhost:8081/activate" + "?token=%s\n");
         return message;
     }
 

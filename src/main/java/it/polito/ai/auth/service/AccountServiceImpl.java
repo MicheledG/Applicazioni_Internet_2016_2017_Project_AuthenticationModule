@@ -69,11 +69,6 @@ public class AccountServiceImpl implements AccountService {
 			return false;
 		}
 		
-		// The password or the nickname fields are empty
-		if (credentials.getPassword().isEmpty() || credentials.getNickname().isEmpty()) {
-			return false;
-		}
-		
 		// Create a new account. For now the account is created already enabled, but later should be
 		// created disabled until the user verifies it through a dedicated email.
 		Account newAccount = new Account(credentials.getUsername(), credentials.getPassword());
@@ -81,14 +76,12 @@ public class AccountServiceImpl implements AccountService {
 		
 		// Create a profile for the new user
 		if (!createProfile(credentials.getUsername(), credentials.getNickname())) {
-			accountRepository.delete(newAccount); // Temporary, to be removed after mail implementation
+			accountRepository.delete(newAccount);
 			return false;
 		}
 		
 		// Generate a token for account activation
 		String token = jwtService.getToken(credentials.getUsername());
-		
-		System.err.println("Token: " + token);
 		
 		// Send an email with the generated token
 		mailService.sendEmail(credentials.getUsername(), token);
@@ -123,7 +116,6 @@ public class AccountServiceImpl implements AccountService {
 			);
 		} catch (Exception e) {
 			// Error getting data from the Profile module
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -150,20 +142,17 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean updatePassword(String username, String password) {
+	public void updatePassword(String username, String password) {
 		Account account = accountRepository.findOneByUsername(username);
 		account.setPassword(password);
-		Account newAccount = accountRepository.save(account);
+
+		accountRepository.save(account);
 		
-		if (newAccount == null) {
-			return false;
-		}
-		
-		return true;
+		return;
 	}
 
 	@Override
-	public boolean verify(String token) {
+	public boolean activate(String token) {
 		// Verify token
 		String username = jwtService.getUsername(token);
 		
