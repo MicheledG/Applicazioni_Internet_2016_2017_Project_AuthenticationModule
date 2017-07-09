@@ -54,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// Allow anonymous access to "/login" and "/signup" (only POST requests)
 				.antMatchers(HttpMethod.POST,"/login").permitAll()
 				.antMatchers(HttpMethod.POST,"/signup").permitAll()
-				// Allow anonymous access to "/activate" (only GET requests)
-				.antMatchers(HttpMethod.GET, "/activate").permitAll()
+				// Allow anonymous access to "/activate" (only POST requests)
+				.antMatchers(HttpMethod.POST, "/activate").permitAll()
 				// TODO add authentication between microservices
 				.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 				// Any other request must be authenticated

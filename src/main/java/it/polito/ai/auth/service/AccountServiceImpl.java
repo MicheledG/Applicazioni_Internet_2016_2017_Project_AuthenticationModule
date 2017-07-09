@@ -166,7 +166,7 @@ public class AccountServiceImpl implements AccountService {
 		account.setEnabled(true);
 		accountRepository.save(account);
 		
-		return false;
+		return true;
 	}
 
 }

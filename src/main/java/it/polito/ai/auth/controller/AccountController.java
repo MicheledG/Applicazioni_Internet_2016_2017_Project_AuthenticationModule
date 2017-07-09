@@ -87,11 +87,11 @@ public class AccountController {
 	 * 
 	 * @param token
 	 */
-	@RequestMapping(value = "/activate", method = RequestMethod.GET)
+	@RequestMapping(value = "/activate", method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.OK)
-	public void activate(@RequestParam String token) throws FailedToSignupException {
+	public void activate(@RequestBody String token) throws FailedToSignupException {
 		
-		// If account activation failes => 400
+		// If account activation fails => 400
 		if (!accountService.activate(token)) {
 			throw new FailedToSignupException();
 		}
