@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.auth.exception.FailedToAuthenticateException;
 import it.polito.ai.auth.exception.FailedToLoginException;
 import it.polito.ai.auth.exception.FailedToSignupException;
+import it.polito.ai.auth.security.ActivationToken;
 import it.polito.ai.auth.security.LoginCredentials;
 import it.polito.ai.auth.security.Password;
 import it.polito.ai.auth.security.RemoteAuthentication;
@@ -89,10 +89,10 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/activate", method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.OK)
-	public void activate(@RequestBody String token) throws FailedToSignupException {
+	public void activate(@RequestBody ActivationToken activationToken) throws FailedToSignupException {
 		
 		// If account activation fails => 400
-		if (!accountService.activate(token)) {
+		if (!accountService.activate(activationToken.getToken())) {
 			throw new FailedToSignupException();
 		}
 	}
