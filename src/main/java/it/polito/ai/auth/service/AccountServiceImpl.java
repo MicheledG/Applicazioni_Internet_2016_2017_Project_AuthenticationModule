@@ -18,7 +18,7 @@ import it.polito.ai.auth.security.SignupCredentials;
 @Service
 public class AccountServiceImpl implements AccountService {
 	
-	private static final String REMOTE_PROFILE_ENDPOINT = "http://localhost:8083/profile";
+	private static final String REMOTE_PROFILE_ENDPOINT = "https://localhost:8083/profile";
 	
 	@Autowired
 	private JWTService jwtService;
