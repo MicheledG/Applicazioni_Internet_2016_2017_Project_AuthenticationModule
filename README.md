@@ -24,7 +24,7 @@ If a wrong authentication token is provided, a `401 Unauthorized` code is return
 | `/signup`       | `POST` | SignupCredentials  |              | 200    |            | Register a new user |
 |                 |        |                    |              | 400    |            | Signup data are not valid, bad request |
 |                 |        |                    |              | 409    |            | A profile for the same username or nickname already exists |
-| `/activate`     | `GET`  |                    | token        | 200    |            | Activate a new account |
+| `/activate`     | `POST` | token              | token        | 200    |            | Activate a new account |
 |                 |        |                    |              | 400    |            | Token not valid, activation failed |
 | `/authenticate` | `POST` | token              |              | 200    |            | Authenticate a user given a token |
 |                 |        |                    |              | 401    |            | Token not valid, activation failed |
