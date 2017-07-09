@@ -25,7 +25,14 @@ public class MailServiceImpl implements MailService {
 		System.err.println("Mail sent");
 	}
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+	/** 
+	 * Send an email.
+	 * 
+	 * @param to
+	 * @param subject
+	 * @param text
+	 */
+    private void sendSimpleMessage(String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage(); 
         message.setTo(to); 

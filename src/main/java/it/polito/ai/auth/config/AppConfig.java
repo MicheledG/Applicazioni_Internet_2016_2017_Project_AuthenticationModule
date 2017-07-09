@@ -17,6 +17,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAsync
 public class AppConfig {
 	
+	/**
+	 * Configure the application to send email through GMail
+	 * 
+	 * @return
+	 */
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 	    
@@ -35,6 +40,11 @@ public class AppConfig {
 	    return mailSender;
 	}
 	
+	/**
+	 * Set a template for the email to send to new users.
+	 * 
+	 * @return
+	 */
 	@Bean
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();

@@ -153,6 +153,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public boolean activate(String token) {
+		
 		// Verify token
 		String username = jwtService.getUsername(token);
 		
@@ -167,6 +168,7 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.save(account);
 		
 		return true;
+		
 	}
 
 }

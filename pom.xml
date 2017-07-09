@@ -24,6 +24,7 @@
 	</properties>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -60,6 +61,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -72,10 +74,6 @@
 	</build>
 
 
-	<description>authentication-module handle the RESTful API about:
-- signup a new user;
-- signin a registered user;
-
-note:
-- the signin is done computing a JWT (Json Web Token) to send back to the client. each following request of the user will transport the server-side computed token</description>
+	<description>Authentication Microservice</description>
+	
 </project>

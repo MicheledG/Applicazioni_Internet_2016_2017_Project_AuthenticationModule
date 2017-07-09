@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated().and()
 			// Custom filter for authenticating users using tokens
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-			// Disable resource caching, enable only if the client app is external to this modoule
+			// Disable resource caching
 			.headers().cacheControl();
 	}	
 
